@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         PlacesAdapter adapter = new PlacesAdapter(placeList);
         recyclerView.setAdapter(adapter);
 
-        App.getPlaceApi().getData("http://sms.servio.support:32892/GetPlaces/").enqueue(new Callback<PlaceObject>() {
+        App.getPlaceApi()
+                .getData("http://sms.servio.support:32892/GetPlaces/")
+                .enqueue(new Callback<PlaceObject>() {
 
             @Override
             public void onResponse(Call<PlaceObject> call, Response<PlaceObject> response) {
@@ -60,16 +62,17 @@ public class MainActivity extends AppCompatActivity {
     private List<Place> getPlaces(List<PlaceUnion> placeUnionsList) {
 
         List<PlaceGroup> groups = new ArrayList<>();
+        List<PlaceGroupSchema> placeGroupSchemas = new ArrayList<>();
+        List <Place> places = new ArrayList<>();
+
         for (PlaceUnion p: placeUnionsList) {
             groups.addAll(p.getPlaceGroups());
         }
 
-        List<PlaceGroupSchema> placeGroupSchemas = new ArrayList<>();
         for (PlaceGroup p : groups) {
             placeGroupSchemas.addAll(p.getPlaceGroupSchemas());
         }
 
-        List <Place> places = new ArrayList<>();
         for (PlaceGroupSchema p: placeGroupSchemas) {
             places.addAll(p.getPlaces());
         }
